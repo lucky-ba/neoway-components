@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="./src/components/search-input/search-input.ts"></script>
+</head>
+<body>
+  <!-- Advanced Usage with Suggestions -->
+  <search-input
+    placeholder="Search users..."
+    debounce="1000"
+  ></search-input>
+
+  <script>
+    // Basic search input
+    const searchInput = document.querySelector('search-input');
+    searchInput.addEventListener('search', (event) => {
+      console.log('Search query:', event.detail.query);
+    });
+
+    // Advanced search input
+    const advancedSearch = document.querySelector('search-input');
+    advancedSearch.suggestions = [
+      { id: '1', label: 'John Doe', value: 'john' },
+      { id: '2', label: 'Jane Smith', value: 'jane' },
+      { id: '3', label: 'Bob Johnson', value: 'bob' }
+    ];
+
+    advancedSearch.addEventListener('search', (event) => {
+      console.log('Search:', event.detail.query);
+    });
+
+    advancedSearch.addEventListener('suggestion-selected', (event) => {
+      console.log('Selected suggestion:', event.detail.suggestion);
+    });
+  </script>
+</body>
+</html>
