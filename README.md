@@ -10,7 +10,7 @@ npm install my-lit-components
 
 ## Usage
 
-```bash
+```js
 import 'my-lit-components';
 
 // Use in your HTML
