@@ -11,9 +11,12 @@ npm install my-lit-components
 ## Usage
 
 ```js
-import 'my-lit-components';
+import "my-lit-components";
+```
 
-// Use in your HTML
+Use in your HTML
+
+```html
 <my-search-input label="Click me"></my-search-input>
 <my-virtualized-table header="Title">Content</my-virtualized-table>
 ```
