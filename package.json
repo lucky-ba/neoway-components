@@ -1,16 +1,39 @@
 {
   "name": "neoway-components",
-  "private": true,
-  "version": "0.0.0",
+  "description": "A collection of Lit web components",
+  "version": "1.0.0",
   "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && rollup -c",
     "preview": "vite preview",
     "lint": "eslint \"**/*.ts\"",
     "lint:fix": "eslint \"**/*.ts\" --fix",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepublish-only": "npm run build"
+  },
+  "keywords": [
+    "lit",
+    "web-components",
+    "components"
+  ],
+  "author": "Lucas Katayama",
+  "license": "MIT",
+  "peerDependencies": {
+    "lit": "^3.3.1"
   },
   "dependencies": {
     "@lit-labs/virtualizer": "^2.1.1",
@@ -21,6 +44,8 @@
     "@eslint/css": "^0.13.0",
     "@eslint/js": "^9.37.0",
     "@eslint/json": "^0.13.2",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@storybook/addon-a11y": "^9.1.10",
     "@storybook/addon-docs": "^9.1.10",
     "@storybook/addon-vitest": "^9.1.10",
@@ -33,6 +58,8 @@
     "globals": "^16.4.0",
     "jiti": "^2.6.1",
     "playwright": "^1.56.0",
+    "rollup": "^4.52.4",
+    "rollup-plugin-dts": "^6.2.3",
     "storybook": "^9.1.10",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.0",

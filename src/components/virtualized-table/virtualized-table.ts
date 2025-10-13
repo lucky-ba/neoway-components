@@ -43,13 +43,13 @@ export class VirtualizedTable extends LitElement {
 
   private handleRowKeyDown(event: KeyboardEvent, row: any) {
     if (event.key === "Enter") {
-      this.handleRowClick(row)
+      this.handleRowClick(row);
     }
   }
 
   private handleHeaderKeyDown(event: KeyboardEvent, key: string) {
     if (event.key === "Enter") {
-      this._handleSort(key)
+      this._handleSort(key);
     }
   }
 
@@ -98,7 +98,7 @@ export class VirtualizedTable extends LitElement {
   private _renderHeaderCell(column: TableColumn) {
     const isSorted = this.sortBy === column.key;
     const sortIndicator = isSorted
-      ? html`<span  class="sort-indicator"
+      ? html`<span class="sort-indicator"
           >${this.sortDirection === "asc" ? "↑" : "↓"}</span
         >`
       : "";
@@ -113,7 +113,8 @@ export class VirtualizedTable extends LitElement {
           ? "sortable"
           : ""} ${widthClass} ${alignClass}"
         @click=${column.sortable ? () => this._handleSort(column.key) : null}
-        @keydown=${(e: KeyboardEvent) => column.sortable ? this.handleHeaderKeyDown(e, column.key) : null}
+        @keydown=${(e: KeyboardEvent) =>
+          column.sortable ? this.handleHeaderKeyDown(e, column.key) : null}
       >
         <span>${column.header}</span>
         ${sortIndicator}
@@ -199,5 +200,11 @@ export class VirtualizedTable extends LitElement {
 
       return this.sortDirection === "asc" ? result : -result;
     });
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "virtualized-table": VirtualizedTable;
   }
 }

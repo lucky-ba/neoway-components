@@ -9,7 +9,7 @@ interface Suggestion {
 }
 
 @customElement("search-input")
-export class AdvancedSearchInput extends LitElement {
+export class SearchInput extends LitElement {
   @property({ type: String }) placeholder = "Search...";
   @property({ type: Number }) debounce = 300;
   @property({ type: Boolean }) disabled = false;
@@ -178,5 +178,11 @@ export class AdvancedSearchInput extends LitElement {
           : ""}
       </div>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "search-input": SearchInput;
   }
 }
