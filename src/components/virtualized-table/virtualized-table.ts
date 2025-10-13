@@ -41,13 +41,19 @@ export class VirtualizedTable extends LitElement {
   @state()
   private sortDirection: "asc" | "desc" = "asc";
 
-  private handleKeyDown(event: KeyboardEvent, row: any) {
+  private handleRowKeyDown(event: KeyboardEvent, row: any) {
     if (event.key === "Enter") {
-      console.log(row);
+      this.handleRowClick(row)
     }
   }
 
-  private handleClick(event: Event, row: any) {
+  private handleHeaderKeyDown(event: KeyboardEvent, key: string) {
+    if (event.key === "Enter") {
+      this._handleSort(key)
+    }
+  }
+
+  private handleRowClick(row: any) {
     this.dispatchEvent(
       new CustomEvent("row-click", {
         bubbles: true,
@@ -57,8 +63,6 @@ export class VirtualizedTable extends LitElement {
         },
       })
     );
-    event.preventDefault();
-    console.log(row);
   }
 
   render() {
@@ -94,7 +98,7 @@ export class VirtualizedTable extends LitElement {
   private _renderHeaderCell(column: TableColumn) {
     const isSorted = this.sortBy === column.key;
     const sortIndicator = isSorted
-      ? html`<span class="sort-indicator"
+      ? html`<span  class="sort-indicator"
           >${this.sortDirection === "asc" ? "↑" : "↓"}</span
         >`
       : "";
@@ -109,6 +113,7 @@ export class VirtualizedTable extends LitElement {
           ? "sortable"
           : ""} ${widthClass} ${alignClass}"
         @click=${column.sortable ? () => this._handleSort(column.key) : null}
+        @keydown=${(e: KeyboardEvent) => column.sortable ? this.handleHeaderKeyDown(e, column.key) : null}
       >
         <span>${column.header}</span>
         ${sortIndicator}
@@ -149,8 +154,8 @@ export class VirtualizedTable extends LitElement {
         class="data-row"
         data-row-index="${index}"
         tabindex="0"
-        @click=${(e: Event) => this.handleClick(e, row)}
-        @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e, row)}
+        @click=${() => this.handleRowClick(row)}
+        @keydown=${(e: KeyboardEvent) => this.handleRowKeyDown(e, row)}
       >
         ${this.columns.map((column) => this._renderDataCell(row, column))}
       </div>
