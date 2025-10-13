@@ -1,7 +1,6 @@
 import { LitElement, html } from "lit";
-import { property, state, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 import { customElement } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
 import Styles from "./accessible-modal.styles";
 
 @customElement("accessible-modal")
@@ -21,19 +20,16 @@ export class AccessibleModal extends LitElement {
   closeOnEscape = true;
 
   @property({ type: Boolean })
-  showCloseButton = true;
-
-  @property({ type: Boolean })
   showFooter = true;
-
-  @state()
-  private _isVisible = false;
 
   @query(".modal")
   private _modalElement!: HTMLElement;
 
   @query(".overlay")
   private _overlayElement!: HTMLElement;
+
+  @query(".close-button")
+  private _closeButtonElement!: HTMLElement;
 
   private _lastFocusedElement: HTMLElement | null = null;
   private _focusableElements: HTMLElement[] = [];
@@ -66,30 +62,27 @@ export class AccessibleModal extends LitElement {
 
   private _show(): void {
     this._lastFocusedElement = document.activeElement as HTMLElement;
-    this._isVisible = true;
-
+    
     // Wait for the next frame to ensure the modal is in the DOM
     requestAnimationFrame(() => {
-      this._modalElement.focus();
+      this._closeButtonElement.focus()
       this._updateFocusableElements();
       this._trapFocus();
     });
   }
 
   private _hide(): void {
-    this._isVisible = false;
-
     // Return focus to the previously focused element
     if (this._lastFocusedElement) {
       requestAnimationFrame(() => {
+        console.log(this._lastFocusedElement);
+        
         this._lastFocusedElement?.focus();
       });
     }
   }
 
   private _handleKeydown(event: KeyboardEvent): void {
-    if (!this._isVisible) return;
-
     switch (event.key) {
       case "Escape":
         if (this.closeOnEscape) {
@@ -148,7 +141,7 @@ export class AccessibleModal extends LitElement {
       'details:not([aria-hidden="true"])',
       'summary:not([aria-hidden="true"])',
     ].join(",");
-
+    
     this._focusableElements = Array.from(
       this._modalElement.querySelectorAll(focusableSelectors)
     ).filter((element) => {
@@ -159,7 +152,8 @@ export class AccessibleModal extends LitElement {
         element.getAttribute("aria-hidden") !== "true"
       );
     }) as HTMLElement[];
-
+    console.log(this._focusableElements);
+    
     this._firstFocusableElement = this._focusableElements[0] || null;
     this._lastFocusableElement =
       this._focusableElements[this._focusableElements.length - 1] || null;
@@ -184,15 +178,7 @@ export class AccessibleModal extends LitElement {
         composed: true,
       })
     );
-  }
-
-  private _confirm(): void {
-    this.dispatchEvent(
-      new CustomEvent("modal-confirm", {
-        bubbles: true,
-        composed: true,
-      })
-    );
+    this.open = false
   }
 
   private _handleOverlayClick(event: Event): void {
@@ -204,12 +190,9 @@ export class AccessibleModal extends LitElement {
   }
 
   render() {
-    return html`
+    return this.open ? html`
       <div
-        class=${classMap({
-          overlay: true,
-          visible: this._isVisible,
-        })}
+        class="overlay"
         @click=${this._handleOverlayClick}
         role="presentation"
       >
@@ -231,33 +214,19 @@ export class AccessibleModal extends LitElement {
         >
           <div class="header">
             <h2 id="modal-title" class="title">${this.title}</h2>
-            ${this.showCloseButton
-              ? html`
-                  <button
-                    class="close-button"
-                    @click=${this._close}
-                    aria-label="Close dialog"
-                  >
-                    ×
-                    <span class="sr-only">Close</span>
-                  </button>
-                `
-              : ""}
+            <button
+              class="close-button"
+              @click=${this._close}
+              aria-label="Close dialog"
+            >
+              ×
+              <span class="sr-only">Close</span>
+            </button>
           </div>
 
           <div id="modal-content" class="body">
             <slot></slot>
           </div>
-
-          ${this.showFooter
-            ? html`
-                <div class="footer">
-                  <button class="button secondary" @click=${this._close}>
-                    Cancel
-                  </button>
-                </div>
-              `
-            : ""}
         </div>
 
         <!-- Focus trap end -->
@@ -268,7 +237,7 @@ export class AccessibleModal extends LitElement {
           @focus=${() => this._firstFocusableElement?.focus()}
         ></div>
       </div>
-    `;
+    ` : null;
   }
 }
 

@@ -3,6 +3,8 @@ import { css } from "lit";
 export default css`
   :host {
     display: contents;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif;
   }
 
   .overlay {
@@ -16,14 +18,8 @@ export default css`
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
     padding: 20px;
     box-sizing: border-box;
-  }
-
-  .overlay.visible {
     opacity: 1;
     visibility: visible;
   }
@@ -37,14 +33,8 @@ export default css`
     width: 100%;
     display: flex;
     flex-direction: column;
-    transform: scale(0.9) translateY(-20px);
-    transition: all 0.3s ease;
     outline: none;
     position: relative;
-  }
-
-  .overlay.visible .modal {
-    transform: scale(1) translateY(0);
   }
 
   .header {

@@ -8,6 +8,8 @@ export default css`
     --search-bg-color: #ffffff;
     --search-text-color: #374151;
     --search-placeholder-color: #9ca3af;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      sans-serif;
   }
 
   .search-container {
