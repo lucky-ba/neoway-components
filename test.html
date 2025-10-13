@@ -2,9 +2,10 @@
 <html>
   <head>
     <script type="module" src="./src/components/search-input"></script>
+    <script type="module" src="./src/components/virtualized-table"></script>
     <script
       type="module"
-      src="./src/components/virtualized-table/virtualized-table.ts"
+      src="./src/components/accessible-modal/accessible-modal.ts"
     ></script>
   </head>
   <body>
@@ -22,7 +23,12 @@
         placeholder="Search users..."
         debounce="1000"
       ></search-input>
+      <button class="trigger-button" onclick="openModal('basicModal')">
+        Open Basic Modal
+      </button>
 
+      <accessible-modal id="basicModal" title="Welcome to Accessible Modal">
+      </accessible-modal>
       <virtualized-table height="400"></virtualized-table>
     </div>
 
@@ -43,7 +49,7 @@
       });
 
       fetch(
-        "https://newsapi.org/v2/everything?sources=bbc-news&apiKey=33eb5a6baf50414e8d5f17a3ad4b7ab9"
+        "https://newsapi.org/v2/everything?q=tech&apiKey=33eb5a6baf50414e8d5f17a3ad4b7ab9"
       )
         .then((response) => response.json())
         .then((data) => {
@@ -53,7 +59,7 @@
 
           table.columns = [
             {
-              key: "description",
+              key: "title",
               header: "Title",
               sortable: true,
             },
@@ -67,10 +73,50 @@
           ];
 
           table.addEventListener("row-click", (event) => {
-            console.log("Row clicked:", event.detail);
+            const row = event.detail;
+            const modal = document.getElementById("basicModal");
+            modal.title = row.title;
+            const paragraphElement = document.createElement("p");
+            paragraphElement.textContent = row.description;
+            modal.appendChild(paragraphElement);
+
+            modal.open = true;
           });
         })
         .catch((error) => console.error("Error fetching data:", error));
+
+      function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.open = true;
+      }
+
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.open = false;
+      }
+
+      function handleCustomAction() {
+        alert("Action confirmed!");
+        closeModal("customModal");
+      }
+
+      // Listen for modal events
+      document.addEventListener("modal-close", (event) => {
+        closeModal("basicModal");
+      });
+
+      document.addEventListener("modal-confirm", (event) => {
+        closeModal("basicModal");
+      });
+
+      // Add some focusable elements to test tab navigation
+      const demoSection = document.querySelector(".demo-section");
+      const testButton = document.createElement("button");
+      testButton.textContent = "Test Button (before modal)";
+      testButton.className = "trigger-button";
+      testButton.style.marginRight = "1rem";
+      testButton.onclick = () => openModal("basicModal");
+      demoSection?.insertBefore(testButton, demoSection.firstChild);
     </script>
   </body>
 </html>

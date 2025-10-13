@@ -47,6 +47,20 @@ export class VirtualizedTable extends LitElement {
     }
   }
 
+  private handleClick(event: Event, row: any) {
+    this.dispatchEvent(
+      new CustomEvent("row-click", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          ...row,
+        },
+      })
+    );
+    event.preventDefault();
+    console.log(row);
+  }
+
   render() {
     return html`
       <div class="table-container">
@@ -135,6 +149,7 @@ export class VirtualizedTable extends LitElement {
         class="data-row"
         data-row-index="${index}"
         tabindex="0"
+        @click=${(e: Event) => this.handleClick(e, row)}
         @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e, row)}
       >
         ${this.columns.map((column) => this._renderDataCell(row, column))}
