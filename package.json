@@ -13,6 +13,18 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./components/accessible-modal": {
+      "import": "./dist/AccessibleModal/index.mjs",
+      "require": "./dist/AccessibleModal/index.js"
+    },
+    "./components/search-input": {
+      "import": "./dist/SearchInput/index.mjs",
+      "require": "./dist/SearchInput/index.js"
+    },
+    "./components/virtualized-table": {
+      "import": "./dist/VirtualizedTable/index.mjs",
+      "require": "./dist/VirtualizedTable/index.js"
     }
   },
   "scripts": {

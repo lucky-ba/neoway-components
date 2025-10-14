@@ -10,7 +10,6 @@
     "types": ["vite/client"],
     "skipLibCheck": true,
 
-    /* Bundler mode */
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
@@ -18,7 +17,7 @@
     "noEmit": true,
     "outDir": "./dist",
     "declarationDir": "./dist/types",
-    /* Linting */
+    
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
