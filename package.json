@@ -15,16 +15,16 @@
       "types": "./dist/index.d.ts"
     },
     "./components/accessible-modal": {
-      "import": "./dist/AccessibleModal/index.mjs",
-      "require": "./dist/AccessibleModal/index.js"
+      "import": "./dist/AccessibleModal/index.js",
+      "require": "./dist/AccessibleModal/index.d.ts"
     },
     "./components/search-input": {
-      "import": "./dist/SearchInput/index.mjs",
-      "require": "./dist/SearchInput/index.js"
+      "import": "./dist/SearchInput/index.js",
+      "require": "./dist/SearchInput/index.d.ts"
     },
     "./components/virtualized-table": {
-      "import": "./dist/VirtualizedTable/index.mjs",
-      "require": "./dist/VirtualizedTable/index.js"
+      "import": "./dist/VirtualizedTable/index.js",
+      "require": "./dist/VirtualizedTable/index.d.ts"
     }
   },
   "scripts": {
