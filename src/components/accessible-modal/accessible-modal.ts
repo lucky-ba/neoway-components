@@ -62,10 +62,10 @@ export class AccessibleModal extends LitElement {
 
   private _show(): void {
     this._lastFocusedElement = document.activeElement as HTMLElement;
-    
+
     // Wait for the next frame to ensure the modal is in the DOM
     requestAnimationFrame(() => {
-      this._closeButtonElement.focus()
+      this._closeButtonElement.focus();
       this._updateFocusableElements();
       this._trapFocus();
     });
@@ -75,8 +75,6 @@ export class AccessibleModal extends LitElement {
     // Return focus to the previously focused element
     if (this._lastFocusedElement) {
       requestAnimationFrame(() => {
-        console.log(this._lastFocusedElement);
-        
         this._lastFocusedElement?.focus();
       });
     }
@@ -141,7 +139,7 @@ export class AccessibleModal extends LitElement {
       'details:not([aria-hidden="true"])',
       'summary:not([aria-hidden="true"])',
     ].join(",");
-    
+
     this._focusableElements = Array.from(
       this._modalElement.querySelectorAll(focusableSelectors)
     ).filter((element) => {
@@ -152,8 +150,6 @@ export class AccessibleModal extends LitElement {
         element.getAttribute("aria-hidden") !== "true"
       );
     }) as HTMLElement[];
-    console.log(this._focusableElements);
-    
     this._firstFocusableElement = this._focusableElements[0] || null;
     this._lastFocusableElement =
       this._focusableElements[this._focusableElements.length - 1] || null;
@@ -178,7 +174,6 @@ export class AccessibleModal extends LitElement {
         composed: true,
       })
     );
-    this.open = false
   }
 
   private _handleOverlayClick(event: Event): void {
@@ -190,54 +185,56 @@ export class AccessibleModal extends LitElement {
   }
 
   render() {
-    return this.open ? html`
-      <div
-        class="overlay"
-        @click=${this._handleOverlayClick}
-        role="presentation"
-      >
-        <!-- Focus trap start -->
-        <div
-          class="focus-trap"
-          tabindex="0"
-          aria-hidden="true"
-          @focus=${() => this._lastFocusableElement?.focus()}
-        ></div>
+    return this.open
+      ? html`
+          <div
+            class="overlay"
+            @click=${this._handleOverlayClick}
+            role="presentation"
+          >
+            <!-- Focus trap start -->
+            <div
+              class="focus-trap"
+              tabindex="0"
+              aria-hidden="true"
+              @focus=${() => this._lastFocusableElement?.focus()}
+            ></div>
 
-        <div
-          class="modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="modal-title"
-          aria-describedby="modal-content"
-          tabindex="-1"
-        >
-          <div class="header">
-            <h2 id="modal-title" class="title">${this.title}</h2>
-            <button
-              class="close-button"
-              @click=${this._close}
-              aria-label="Close dialog"
+            <div
+              class="modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-title"
+              aria-describedby="modal-content"
+              tabindex="-1"
             >
-              ×
-              <span class="sr-only">Close</span>
-            </button>
-          </div>
+              <div class="header">
+                <h2 id="modal-title" class="title">${this.title}</h2>
+                <button
+                  class="close-button"
+                  @click=${this._close}
+                  aria-label="Close dialog"
+                >
+                  ×
+                  <span class="sr-only">Close</span>
+                </button>
+              </div>
 
-          <div id="modal-content" class="body">
-            <slot></slot>
-          </div>
-        </div>
+              <div id="modal-content" class="body">
+                <slot></slot>
+              </div>
+            </div>
 
-        <!-- Focus trap end -->
-        <div
-          class="focus-trap"
-          tabindex="0"
-          aria-hidden="true"
-          @focus=${() => this._firstFocusableElement?.focus()}
-        ></div>
-      </div>
-    ` : null;
+            <!-- Focus trap end -->
+            <div
+              class="focus-trap"
+              tabindex="0"
+              aria-hidden="true"
+              @focus=${() => this._firstFocusableElement?.focus()}
+            ></div>
+          </div>
+        `
+      : null;
   }
 }
 
