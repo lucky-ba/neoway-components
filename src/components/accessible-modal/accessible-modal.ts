@@ -19,9 +19,6 @@ export class AccessibleModal extends LitElement {
   @property({ type: Boolean })
   closeOnEscape = true;
 
-  @property({ type: Boolean })
-  showFooter = true;
-
   @query(".modal")
   private _modalElement!: HTMLElement;
 
