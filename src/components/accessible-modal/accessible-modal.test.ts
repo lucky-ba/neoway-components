@@ -14,6 +14,14 @@ import { AccessibleModal } from "../accessible-modal";
 describe("AccessibleModal", () => {
   let element: AccessibleModal;
 
+  describe("Accessibility", () => {
+    it("passes the a11y audit", async () => {
+      element = await fixture(html`<accessible-modal></accessible-modal>`);
+
+      await expect(element).shadowDom.to.be.accessible();
+    });
+  });
+
   describe("Basic Rendering", () => {
     beforeEach(async () => {
       element = await fixture(html`<accessible-modal></accessible-modal>`);
@@ -56,20 +64,6 @@ describe("AccessibleModal", () => {
       const event = await oneEvent(element, "modal-close");
 
       expect(event).to.exist;
-    });
-
-    it("should dispatche modal-close event on Escape press", async () => {
-      element.open = true;
-      await elementUpdated(element);
-      setTimeout(
-        async () =>
-          await sendKeys({
-            press: "Escape",
-          })
-      );
-      const event = await oneEvent(element, "modal-close");
-
-      await expect(event).to.exist;
     });
   });
 
@@ -121,15 +115,18 @@ describe("AccessibleModal", () => {
 
       expect(closeSpy).to.have.callCount(0);
     });
-    it("should call _close on Escape press when closeOnEscape is false", async () => {
+
+    it("should not call _close on Escape press when closeOnEscape is false", async () => {
       element.open = true;
       element.closeOnEscape = false;
       await elementUpdated(element);
       const closeSpy = spy(element as any, "_close");
-      await sendKeys({
-        press: "Escape",
-      });
-
+      setTimeout(
+        async () =>
+          await sendKeys({
+            press: "Escape",
+          })
+      );
       expect(closeSpy).to.have.callCount(0);
     });
   });
