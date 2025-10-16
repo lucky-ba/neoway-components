@@ -150,3 +150,19 @@ import "neoway-components";
 - **Backdrop click**: Click outside to close
 - **Accessible**: ARIA labels, proper roles, and screen reader support
 - **Animated**: Smooth open/close transitions
+
+## Useful Commands
+
+### Storybook
+
+```bash
+npm run storybook
+```
+
+### Tests
+
+```bash
+npm run test
+npm run test:watch
+npm run test:coverage
+```
